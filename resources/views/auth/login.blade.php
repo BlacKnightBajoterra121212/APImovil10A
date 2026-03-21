@@ -23,7 +23,7 @@
 
                     <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
 
-                        <form style="width: 23rem;">
+                        <form style="width: 23rem;" action="/dashboard">
 
                             <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Inicio de sesion</h3>
 
@@ -38,8 +38,9 @@
                             </div>
 
                             <div class="pt-1 mb-4">
-                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block"
-                                    type="button">Iniciar sesión</button>
+                                <button class="btn btn-info btn-lg btn-block" type="submit">
+                                    Iniciar sesión
+                                </button>
                             </div>
 
                             <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Olvidaste tu contraseña?</a>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tostatech</string>
+    <string name="title_activity_main">Tostatech</string>
+    <string name="package_name">Tostatech.com</string>
+    <string name="custom_url_scheme">Tostatech.com</string>
+</resources>

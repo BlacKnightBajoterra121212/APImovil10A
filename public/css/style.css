@@ -5401,7 +5401,7 @@ body.full-height-layout #page-wrapper {
 }
 
 .right-sidebar-open #page-wrapper {
-    margin-right: 0 !important;
+  margin-right: 0 !important;
 }
 
 body.boxed-layout {
@@ -11809,5 +11809,4 @@ body.md-skin {
   #edit_cp {
     -moz-appearance: textfield !important;
   }
-
 }
