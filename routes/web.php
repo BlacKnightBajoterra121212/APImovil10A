@@ -42,4 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
+Route::get('/pedidos', function () {
+    // 'pedidos.pedidos' significa: carpeta pedidos, archivo pedidos.blade.php
+    return view('pedidos.pedidos');
+});
 require __DIR__.'/auth.php';

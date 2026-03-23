@@ -17,86 +17,101 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     <style>
-        /* --- AJUSTES DE COLOR TOSTATECH (NEGRO Y NARANJA) --- */
-        
+        /* FONDO GENERAL Y TEXTO */
         body {
-            background: #2f4050; /* Color de fondo base de Inspinia, pero el contenido será degradado */
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
         }
 
-        /* Sidebar en Negro */
-        .navbar-default.navbar-static-side {
-            background: #000000 !important;
-            border-right: 1px solid rgba(255, 183, 0, 0.2);
-        }
-
-        #side-menu li a {
-            color: #ffffff !important;
-            font-weight: 500;
-        }
-
-        /* Hover y Active en Naranja TostaTech */
-        #side-menu li.active > a, 
-        #side-menu li a:hover {
-            background-color: #ffb700 !important;
-            color: #000000 !important;
-        }
-
-        #side-menu li.active {
-            border-left: 4px solid #ff7b00;
-        }
-
-        /* Header del Perfil en el Sidebar */
-        .nav-header {
-            background: #000000 !important;
-            border-bottom: 1px solid rgba(255, 183, 0, 0.2);
-        }
-
-        .nav-header .font-bold {
-            color: #ffb700;
-        }
-
-        /* Page Wrapper (Fondo de la aplicación) */
         #page-wrapper {
-            background: linear-gradient(135deg, #ff7b00, #ffb700) !important;
+            background-color: #ececec !important; /* Gris casi negro para el contenido */
             min-height: 100vh;
         }
 
-        /* Top Navbar */
+        /* SIDEBAR (Negro con acento Naranja) */
+        .navbar-static-side {
+            background-color: #000000 !important;
+            border-right: 1px solid #222;
+            width: 220px;
+        }
+
+        .sidebar-collapse {
+            background-color: #000000 !important;
+        }
+
+        #side-menu li a {
+            color: #d1d1d1 !important;
+            font-weight: 500;
+        }
+
+        #side-menu > li > a:hover, 
+        #side-menu > li.active > a {
+            background-color: #ff7e00 !important; /* Naranja TostaTech */
+            color: white !important;
+        }
+
+        .nav-header {
+            background-color: #000000 !important;
+            border-bottom: 1px solid #222;
+        }
+
+        /* NAVBAR SUPERIOR */
         .navbar-static-top {
-            background: #000000 !important;
-            border-bottom: 1px solid rgba(255, 183, 0, 0.2) !important;
+            background-color: #000000 !important;
+            border-bottom: 1px solid #222 !important;
         }
 
-        .navbar-static-top a {
-            color: #ffb700 !important;
-        }
-
-        /* Footer */
-        .footer {
-            background: rgba(0, 0, 0, 0.8) !important;
-            border-top: 1px solid #ffb700 !important;
-            color: #fff !important;
-        }
-
-        .footer a {
-            color: #ffb700 !important;
-        }
-
-        /* Botón de Hamburguesa */
         .navbar-minimalize {
-            background-color: #ffb700 !important;
-            border-color: #ffb700 !important;
-            color: #000 !important;
+            background-color: #ff7e00 !important;
+            color: white !important;
+            border: none;
         }
 
-        /* Pagination */
+        .navbar-top-links li a {
+            color: #ff7e00 !important;
+        }
+
+        /* ELEMENTOS COMUNES (FOOTER, PAGINACIÓN) */
+        .footer {
+            background: #000000 !important;
+            border-top: 1px solid #222 !important;
+            color: #888;
+        }
+
+        .pagination .page-link {
+            background-color: #1a1a1a;
+            border-color: #333;
+            color: #ff7e00;
+        }
+
         .pagination .page-item.active .page-link {
-            background-color: #ffb700 !important;
-            border-color: #ffb700 !important;
-            color: #000 !important;
+            background-color: #ff7e00;
+            border-color: #ff7e00;
+            color: white;
+        }
+
+        /* DASHBOARD BOXES (ibox) */
+        .ibox-title {
+            background-color: #1a1a1a !important;
+            border-color: #333 !important;
+            color: #ffb700 !important;
+        }
+
+        .ibox-content {
+            background-color: #1a1a1a !important;
+            border-color: #333 !important;
+            color: #ffffff !important;
+        }
+
+        .chart-box {
+            height: 300px;
+            width: 100%;
+        }
+
+        @media (max-width:768px) {
+            .chart-box { height: 260px; }
         }
     </style>
 </head>
@@ -109,49 +124,46 @@
             <div class="sidebar-collapse">
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
-                        <div class="dropdown profile-element">
-                            <img class="rounded-circle" width="40" src="{{ asset('img/user.png') }}">
-                            <span class="block m-t-xs font-bold">
-                                {{ Auth::user()->name ?? 'Usuario' }}
+                        <div class="dropdown profile-element text-center">
+                            <img class="rounded-circle" width="50" src="{{ asset('img/user.png') }}" style="border: 2px solid #ff7e00;">
+                            <span class="block m-t-xs font-bold" style="color: #ffb700; margin-top: 10px;">
+                                {{ Auth::user()->name ?? 'Admin TostaTech' }}
                             </span>
                         </div>
-                        <div class="logo-element" style="color: #ffb700; font-weight: 800;">
-                            TT
-                        </div>
+                        <div class="logo-element" style="color: #ff7e00;">TT</div>
                     </li>
 
                     <li>
                         <a href="{{ url('/dashboard') }}">
-                            <i class="fa fa-home"></i>
+                            <i class="fa fa-home" style="color: #ff7e00;"></i>
                             <span class="nav-label">Inicio</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="javascript:void(0)">
-                            <i class="fa fa-users"></i>
+                            <i class="fa fa-users" style="color: #ff7e00;"></i>
                             <span class="nav-label">Directorio</span>
                             <span class="fa arrow"></span>
                         </a>
-                        <ul class="nav nav-second-level collapse" style="background: #111;">
-                            <li><a href="{{ url('/usuarios') }}">Lista de usuarios</a></li>
+                        <ul class="nav nav-second-level collapse" style="background: #0a0a0a;">
+                            <li><a href="{{ url('/personal') }}">Lista de usuarios</a></li>
                             <li><a href="{{ url('/usuarios/create') }}">Crear usuario</a></li>
                         </ul>
                     </li>
 
                     <li>
-                        <a href="{{ url('/pedidos') }}">
-                            <i class="fa fa-shopping-cart"></i>
-                            <span class="nav-label">Pedidos</span>
+                        <a href="{{ url('/productos') }}">
+                            <i class="fa fa-box" style="color: #ff7e00;"></i>
+                            <span class="nav-label">Productos</span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="{{ url('/productos') }}">
-                            <i class="fa fa-box"></i>
-                            <span class="nav-label">Productos</span>
+                        <a href="{{ url('/pedidos') }}">
+                            <i class="fa fa-shopping-cart" style="color: #ff7e00;"></i>
+                            <span class="nav-label">Pedidos</span>
                         </a>
-                    </li>
                 </ul>
             </div>
         </nav>
@@ -163,23 +175,22 @@
             <div class="row border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize btn btn-primary"><i class="fa fa-bars"></i></a>
+                        <a class="navbar-minimalize btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="fa fa-user"></i> Mi Cuenta
+                            <a class="dropdown-toggle count-info" data-bs-toggle="dropdown" href="#">
+                                <i class="fa fa-user-circle fa-2x"></i>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end" style="background: #1a1a1a; border: 1px solid #333;">
+                                <li><a href="/perfil" class="dropdown-item" style="color: white;">Perfil</a></li>
+                                <li class="dropdown-divider" style="border-top: 1px solid #333;"></li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <a href="{{ route('logout') }}" class="dropdown-item" style="color: #ff5555;"
+                                        onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                         Cerrar sesión
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                        @csrf
-                                    </form>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">@csrf</form>
                                 </li>
                             </ul>
                         </li>
@@ -195,16 +206,16 @@
             {{-- FOOTER --}}
             <div class="footer">
                 <div class="float-right">
-                    <a href="">Términos y condiciones</a>
+                    <a href="" style="color: #ff7e00;">Términos y condiciones</a>
                 </div>
                 <div>
                     <strong>Copyright</strong> TostaTech &copy; 2026
                 </div>
             </div>
-
         </div>
     </div>
 
+    {{-- SCRIPTS --}}
     <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.js') }}"></script>
@@ -216,7 +227,6 @@
         $(document).ready(function () {
             $('#side-menu').metisMenu();
         });
-
     </script>
 </body>
 </html>
