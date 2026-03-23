@@ -1,212 +1,250 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.layoutDashboard')
 
-<head>
+@section('titulo')
+Dashboard Admin - TostaTech
+@endsection
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+@section('contenido')
 
-    <!-- CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+<style>
+    /* VARIABLES */
+    :root {
+        --naranja-tosta: #ffb700;
+        --negro-card: #000;
+        --texto-blanco: #fff;
+    }
 
-    <style>
-        /* Altura correcta para que flot renderice */
+    /* 1. ELIMINAR EL FONDO NARANJA DEL WRAPPER GLOBAL */
+    /* Usamos !important para asegurar que sobreescriba el CSS del layout */
+    .wrapper-content, 
+    #page-wrapper, 
+    .wrapper {
+        background-color: #ffffff !important;
+        background: #ffffff !important;
+        border: none !important;
+    }
 
-        .chart-box {
-            height: 300px;
-            width: 100%;
-        }
+    /* 2. AJUSTE DEL CONTENEDOR ESPECÍFICO */
+    .container-dashboard {
+        padding: 40px 5%;
+        font-family: 'Poppins', sans-serif;
+        background-color: #ffffff !important;
+        min-height: 100vh;
+        margin: 0;
+        width: 100%;
+    }
 
-        /* móvil */
+    /* TÍTULOS */
+    .dashboard-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #000;
+        margin-bottom: 10px;
+        letter-spacing: -1px;
+    }
 
-        @media (max-width:768px) {
+    .dashboard-subtitle {
+        color: #555;
+        margin-bottom: 40px;
+        font-weight: 400;
+    }
 
-            .chart-box {
-                height: 260px;
-            }
+    /* GRID DE GRÁFICAS */
+    .grid-charts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 50px;
+    }
 
-        }
-    </style>
+    .chart-card {
+        background: var(--negro-card);
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+        transition: .3s;
+    }
 
-</head>
+    .chart-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
 
+    .chart-card h3 {
+        color: var(--naranja-tosta);
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
 
-<body>
+    canvas {
+        max-height: 220px;
+    }
 
-    <div class="container-fluid p-4">
+    /* TABLA DE PEDIDOS */
+    .orders-section-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #000;
+        margin-bottom: 25px;
+    }
 
-        <div class="row">
+    .orders-table-wrapper {
+        background-color: var(--negro-card);
+        border-radius: 15px;
+        padding: 25px;
+        overflow-x: auto;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
 
+    .orders-table {
+        width: 100%;
+        border-collapse: collapse;
+        color: var(--texto-blanco);
+    }
 
-            <!-- PIE -->
-            <div class="col-12 col-md-6 mb-4">
+    .orders-table th {
+        text-align: left;
+        color: var(--naranja-tosta);
+        font-weight: 700;
+        padding: 15px;
+        border-bottom: 2px solid rgba(255,183,0, 0.3);
+    }
 
-                <div class="ibox">
+    .orders-table td {
+        padding: 18px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-                    <div class="ibox-title">
-                        <h5>Pie Chart</h5>
-                    </div>
+    .status-badge {
+        display: inline-block;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-align: center;
+        min-width: 110px;
+    }
 
-                    <div class="ibox-content">
+    .status-badge.pendiente { background-color: var(--naranja-tosta); color: #000; }
+    .status-badge.completado { background-color: #28a745; color: #fff; }
+    .status-badge.cancelado { background-color: #dc3545; color: #fff; }
 
-                        <div id="flot-pie-chart" class="chart-box"></div>
+    .order-total { font-weight: 600; color: var(--naranja-tosta); }
+</style>
 
-                    </div>
+<div class="container-dashboard">
+    <h1 class="dashboard-title">Panel de Administración</h1>
+    <p class="dashboard-subtitle">Bienvenido al control central de TostaTech.</p>
 
-                </div>
-            </div>
+    <div class="grid-charts">
+        <div class="chart-card">
+            <h3>Estado de Pedidos</h3>
+            <canvas id="pedidosChart"></canvas>
+        </div>
 
+        <div class="chart-card">
+            <h3>Personal</h3>
+            <canvas id="personalChart"></canvas>
+        </div>
 
-
-            <!-- BAR -->
-            <div class="col-12 col-md-6 mb-4">
-
-                <div class="ibox">
-
-                    <div class="ibox-title">
-                        <h5>Bar Chart</h5>
-                    </div>
-
-                    <div class="ibox-content">
-
-                        <div id="flot-bar-chart" class="chart-box"></div>
-
-                    </div>
-
-                </div>
-            </div>
-
-
-
-            <!-- RADAR 1 -->
-            <div class="col-12 col-md-6 mb-4">
-
-                <div class="ibox">
-
-                    <div class="ibox-title">
-                        <h5>Radar Chart</h5>
-                    </div>
-
-                    <div class="ibox-content">
-
-                        <div id="gauge" class="chart-box"></div>
-
-                    </div>
-
-                </div>
-            </div>
-
-
-
-            <!-- RADAR 2 -->
-            <div class="col-12 col-md-6 mb-4">
-
-                <div class="ibox">
-
-                    <div class="ibox-title">
-                        <h5>Radar Chart</h5>
-                    </div>
-
-                    <div class="ibox-content">
-
-                        <div id="pie" class="chart-box"></div>
-
-                    </div>
-
-                </div>
-            </div>
-
-
-
+        <div class="chart-card">
+            <h3>Inventario Crítico</h3>
+            <canvas id="inventarioChart"></canvas>
         </div>
     </div>
 
-</body>
+    <h2 class="orders-section-title">Gestión de Pedidos</h2>
+    <div class="orders-table-wrapper">
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Producto</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>001</td>
+                    <td>Juan Pérez</td>
+                    <td>30 Tostadas</td>
+                    <td class="order-total">$240</td>
+                    <td><span class="status-badge pendiente">Pendiente</span></td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>Ana López</td>
+                    <td>15 Tacos Dorados</td>
+                    <td class="order-total">$180</td>
+                    <td><span class="status-badge completado">Completado</span></td>
+                </tr>
+                <tr>
+                    <td>005</td>
+                    <td>Pedro Sánchez</td>
+                    <td>20 Chicharrones</td>
+                    <td class="order-total">$300</td>
+                    <td><span class="status-badge cancelado">Cancelado</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-
-<!-- Scripts -->
-
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.js"></script>
-
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-<!-- Flot -->
-<script src="js/plugins/flot/jquery.flot.js"></script>
-<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script src="js/plugins/flot/jquery.flot.resize.js"></script>
-<script src="js/plugins/flot/jquery.flot.pie.js"></script>
-<script src="js/plugins/flot/jquery.flot.time.js"></script>
-
-<!-- Morris -->
-<script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
-<script src="js/plugins/morris/morris.js"></script>
-
-<!-- d3 -->
-<script src="js/plugins/d3/d3.min.js"></script>
-
-<!-- c3 -->
-<script src="js/plugins/c3/c3.min.js"></script>
-
-<!-- Inspinia -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
-
-<!-- Demo -->
-<script src="js/demo/flot-demo.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    const commonOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { labels: { color: '#fff', font: { family: 'Poppins' } } }
+        }
+    };
 
-    $(document).ready(function () {
-
-        /* Radar 1 */
-
-        c3.generate({
-
-            bindto: '#gauge',
-
-            data: {
-                columns: [
-                    ['data', 91.4]
-                ],
-                type: 'gauge'
-            },
-
-            color: {
-                pattern: ['#1ab394', '#BABABA']
+    // 📊 Gráficas
+    new Chart(document.getElementById('pedidosChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Pendientes', 'Completados', 'Cancelados'],
+            datasets: [{
+                data: [3, 3, 1],
+                backgroundColor: ['#ffb700', '#28a745', '#dc3545']
+            }]
+        },
+        options: {
+            ...commonOptions,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: '#fff' } },
+                y: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } }
             }
-
-        });
-
-
-        /* Radar 2 */
-
-        c3.generate({
-
-            bindto: '#pie',
-
-            data: {
-                columns: [
-                    ['data1', 30],
-                    ['data2', 120]
-                ],
-                colors: {
-                    data1: '#1ab394',
-                    data2: '#BABABA'
-                },
-                type: 'pie'
-            }
-
-        });
-
+        }
     });
 
+    new Chart(document.getElementById('personalChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Cocina', 'Caja', 'Repartidor', 'Auxiliar'],
+            datasets: [{
+                data: [2, 1, 1, 1],
+                backgroundColor: ['#ffb700', '#ff7b00', '#ffa726', '#ffcc80']
+            }]
+        },
+        options: commonOptions
+    });
+
+    new Chart(document.getElementById('inventarioChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Tostada', 'Taco Dorado', 'Botana', 'Otros'],
+            datasets: [{
+                data: [850, 320, 150, 120],
+                backgroundColor: ['#ffb700', '#ff7b00', '#ffa726', '#8d6e63']
+            }]
+        },
+        options: commonOptions
+    });
 </script>
 
-</html>
+@endsection
