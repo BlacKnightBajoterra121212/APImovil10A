@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
         /* --- AJUSTES DE COLOR TOSTATECH (NEGRO Y NARANJA) --- */
         
@@ -128,7 +130,7 @@
                     <li>
                         <a href="javascript:void(0)">
                             <i class="fa fa-users"></i>
-                            <span class="nav-label">Usuarios</span>
+                            <span class="nav-label">Directorio</span>
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level collapse" style="background: #111;">
@@ -214,6 +216,7 @@
         $(document).ready(function () {
             $('#side-menu').metisMenu();
         });
+
     </script>
 </body>
 </html>

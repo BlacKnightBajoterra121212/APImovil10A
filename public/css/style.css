@@ -1125,7 +1125,7 @@ h5 {
 }
 
 .nav>li>a {
-  color: #a7b1c2;
+  color: #000000;
   font-weight: 600;
   padding: 14px 20px 14px 25px;
   display: block;
@@ -1150,9 +1150,10 @@ h5 {
   color: #ffffff;
 }
 
+/*Cambia el color del fondo de cada opcion del menu principal*/
 .navbar-default .nav>li>a:hover,
 .navbar-default .nav>li>a:focus {
-  background-color: #293846;
+  background-color: #b94a00;
   color: white;
 }
 
@@ -1175,9 +1176,10 @@ h5 {
   border: 0;
 }
 
+/*Color del fondo del menu lateral*/
 .navbar-default {
   background-color: transparent;
-  border-color: #2f4050;
+  border-color: #b94a00;
 }
 
 .navbar-top-links li {
@@ -1301,10 +1303,12 @@ h5 {
   font-size: 12px;
 }
 
+/*Este es el color de header de la barra lateral*/
 .nav-header {
   padding: 33px 25px;
-  background-color: #2f4050;
-  background-image: url("patterns/header-profile.png");
+  background-color: #e26e00;
+  /*Imagen que usa de textura para el fondo del header*/
+  /*background-image: url("patterns/header-profile.png");*/
 }
 
 .caret {
@@ -1326,12 +1330,13 @@ h5 {
   transition: all 0.4s;
 }
 
+/* color del fondo de los submenus */
 ul.nav-second-level {
-  background: #293846;
+  background: #b94a00;
 }
 
 .nav>li.active {
-  border-left: 4px solid #19aa8d;
+  border-left: 4px solid #000000;
   background: #293846;
 }
 
@@ -1667,7 +1672,7 @@ body.canvas-menu .logo-element {
 
 body.mini-navbar .nav-header {
   padding: 0;
-  background-color: #1ab394;
+  background-color: #e26e00;
 }
 
 body.canvas-menu .nav-header {
@@ -11809,4 +11814,5 @@ body.md-skin {
   #edit_cp {
     -moz-appearance: textfield !important;
   }
+  
 }
