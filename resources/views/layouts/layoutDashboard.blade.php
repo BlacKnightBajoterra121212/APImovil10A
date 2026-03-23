@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
         .pagination .page-item {
             width: 40px;
@@ -54,14 +56,39 @@
         .nav-second-level {
             overflow: hidden;
         }
+
+        .chart-box {
+            height: 300px;
+            width: 100%;
+        }
+
+        /* móvil */
+
+        @media (max-width:768px) {
+
+            .chart-box {
+                height: 260px;
+            }
+
+        }
+
+        .navbar-static-side {
+            background-color: #ff7e00 !important;
+        }
+
+        .sidebar-collapse {
+            background-color: #ff7e00 !important;
+        }
+
+        #side-menu>li>a:hover {
+            background-color: #b94a00 !important;
+            color: white;
+        }
     </style>
 
 </head>
 
 <body>
-
-<img src="http://10.0.2.2:8000/css/bootstrap.min.css">
-
     <div id="wrapper">
 
         {{-- SIDEBAR --}}
@@ -99,14 +126,14 @@
                     <li>
                         <a href="javascript:void(0)">
                             <i class="fa fa-users"></i>
-                            <span class="nav-label">Usuarios</span>
+                            <span class="nav-label">Directorio</span>
                             <span class="fa arrow"></span>
                         </a>
 
                         <ul class="nav nav-second-level collapse">
 
                             <li>
-                                <a href="{{ url('/usuarios') }}">Lista de usuarios</a>
+                                <a href="{{ url('/personal') }}">Lista de usuarios</a>
                             </li>
 
                             <li>
@@ -140,7 +167,7 @@
 
                     <div class="navbar-header">
 
-                        <a class="navbar-minimalize btn btn-primary">
+                        <a class="navbar-minimalize btn ">
                             <i class="fa fa-bars"></i>
                         </a>
 
@@ -236,6 +263,54 @@
             });
 
         });
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            /* Radar 1 */
+
+            c3.generate({
+
+                bindto: '#gauge',
+
+                data: {
+                    columns: [
+                        ['data', 91.4]
+                    ],
+                    type: 'gauge'
+                },
+
+                color: {
+                    pattern: ['#1ab394', '#BABABA']
+                }
+
+            });
+
+
+            /* Radar 2 */
+
+            c3.generate({
+
+                bindto: '#pie',
+
+                data: {
+                    columns: [
+                        ['data1', 30],
+                        ['data2', 120]
+                    ],
+                    colors: {
+                        data1: '#1ab394',
+                        data2: '#BABABA'
+                    },
+                    type: 'pie'
+                }
+
+            });
+
+        });
+
     </script>
 </body>
 
