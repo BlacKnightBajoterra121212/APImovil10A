@@ -164,6 +164,15 @@
                             <i class="fa fa-shopping-cart" style="color: #ff7e00;"></i>
                             <span class="nav-label">Pedidos</span>
                         </a>
+
+                        {{-- Enlace agregado para Sucursales --}}
+                    {{-- En el Sidebar del Layout --}}
+                <li>
+                    <a href="{{ route('sucursales.index') }}">
+                        <i class="fa fa-map-marker-alt" style="color: #ff7e00;"></i>
+                        <span class="nav-label">Sucursales</span>
+                    </a>
+                </li>
                 </ul>
             </div>
         </nav>
