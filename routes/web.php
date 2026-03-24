@@ -49,3 +49,9 @@ Route::get('/pedidos', function () {
     return view('pedidos.pedidos');
 });
 require __DIR__.'/auth.php';
+
+
+Route::get('/sucursales', function () {
+    // Apunta a la carpeta 'sucursales' y al archivo 'sucursales.blade.php'
+    return view('sucursales.sucursales'); 
+})->name('sucursales.index');
