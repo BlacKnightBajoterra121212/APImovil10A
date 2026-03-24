@@ -173,6 +173,15 @@
                         <span class="nav-label">Sucursales</span>
                     </a>
                 </li>
+
+
+                {{-- Enlace para Inventario --}}
+                <li>
+                    <a href="{{ url('/inventario') }}">
+                        <i class="fa fa-clipboard-list" style="color: #ff7e00;"></i>
+                        <span class="nav-label">Inventario</span>
+                    </a>
+                </li>
                 </ul>
             </div>
         </nav>
