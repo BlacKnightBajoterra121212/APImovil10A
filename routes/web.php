@@ -53,5 +53,4 @@ Route::middleware('auth')->group(function () {
     
 });
 
-// Si el archivo auth.php ya tiene rutas de autenticación, puedes comentar esta línea
-// require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';

@@ -544,3 +544,59 @@
     </script>
 
 @endsection
+
+<style>
+    /* Ajuste del encabezado de página para que no sea blanco */
+    .page-heading {
+        background: #e9e9e9 !important;
+        border-bottom: 1px solid #333 !important;
+        color: #1d1c1b !important;
+    }
+    
+    .breadcrumb {
+        background: transparent !important;
+    }
+
+    /* Estilos para la Tabla */
+    .table-dark-custom {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border: 1px solid #333;
+    }
+
+    .table-dark-custom thead th {
+        background-color: #000000 !important;
+        color: #ffb700 !important; /* Naranja para los encabezados */
+        border-bottom: 2px solid #ff7e00 !important;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+
+    .table-dark-custom tbody tr {
+        border-bottom: 1px solid #333;
+        transition: 0.3s;
+    }
+
+    .table-dark-custom tbody tr:hover {
+        background-color: #252525 !important; /* Efecto hover */
+    }
+
+    .table-dark-custom td {
+        vertical-align: middle;
+        color: #e0e0e0 !important;
+    }
+
+    /* Botones de acción dentro de la tabla */
+    .btn-action {
+        margin: 2px;
+    }
+
+
+
+
+
+
+
+
+    
+</style>

@@ -2,7 +2,6 @@
 <html lang="es">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -18,43 +17,92 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     <style>
-        .pagination .page-item {
-            width: 40px;
-            text-align: center;
+        /* FONDO GENERAL Y TEXTO */
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #page-wrapper {
+            background-color: #ececec !important; /* Gris casi negro para el contenido */
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR (Negro con acento Naranja) */
+        .navbar-static-side {
+            background-color: #000000 !important;
+            border-right: 1px solid #222;
+            width: 220px;
+        }
+
+        .sidebar-collapse {
+            background-color: #000000 !important;
+        }
+
+        #side-menu li a {
+            color: #d1d1d1 !important;
+            font-weight: 500;
+        }
+
+        #side-menu > li > a:hover, 
+        #side-menu > li.active > a {
+            background-color: #ff7e00 !important; /* Naranja TostaTech */
+            color: white !important;
+        }
+
+        .nav-header {
+            background-color: #000000 !important;
+            border-bottom: 1px solid #222;
+        }
+
+        /* NAVBAR SUPERIOR */
+        .navbar-static-top {
+            background-color: #000000 !important;
+            border-bottom: 1px solid #222 !important;
+        }
+
+        .navbar-minimalize {
+            background-color: #ff7e00 !important;
+            color: white !important;
+            border: none;
+        }
+
+        .navbar-top-links li a {
+            color: #ff7e00 !important;
+        }
+
+        /* ELEMENTOS COMUNES (FOOTER, PAGINACIÓN) */
+        .footer {
+            background: #000000 !important;
+            border-top: 1px solid #222 !important;
+            color: #888;
         }
 
         .pagination .page-link {
-            display: block;
-            width: 100%;
-            height: 100%;
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
+            background-color: #1a1a1a;
+            border-color: #333;
+            color: #ff7e00;
         }
 
         .pagination .page-item.active .page-link {
-            background-color: #1ab394;
+            background-color: #ff7e00;
+            border-color: #ff7e00;
             color: white;
         }
 
-        .navbar-static-side {
-            width: 220px;
-            flex: 0 0 220px;
+        /* DASHBOARD BOXES (ibox) */
+        .ibox-title {
+            background-color: #1a1a1a !important;
+            border-color: #333 !important;
+            color: #ffb700 !important;
         }
 
-        #side-menu {
-            width: 100%;
-        }
-
-        .nav-second-level {
-            overflow: hidden;
-        }
-
-        .nav-second-level {
-            overflow: hidden;
+        .ibox-content {
+            background-color: #1a1a1a !important;
+            border-color: #333 !important;
+            color: #ffffff !important;
         }
 
         .chart-box {
@@ -62,30 +110,10 @@
             width: 100%;
         }
 
-        /* móvil */
-
         @media (max-width:768px) {
-
-            .chart-box {
-                height: 260px;
-            }
-
-        }
-
-        .navbar-static-side {
-            background-color: #ff7e00 !important;
-        }
-
-        .sidebar-collapse {
-            background-color: #ff7e00 !important;
-        }
-
-        #side-menu>li>a:hover {
-            background-color: #b94a00 !important;
-            color: white;
+            .chart-box { height: 260px; }
         }
     </style>
-
 </head>
 
 <body>
@@ -93,225 +121,112 @@
 
         {{-- SIDEBAR --}}
         <nav class="navbar-default navbar-static-side" role="navigation">
-
             <div class="sidebar-collapse">
-
                 <ul class="nav metismenu" id="side-menu">
-
                     <li class="nav-header">
-
-                        <div class="dropdown profile-element">
-
-                            <img class="rounded-circle" width="40" src="{{ asset('img/user.png') }}">
-
-                            <span class="block m-t-xs font-bold">
-                                {{ Auth::user()->name ?? 'Usuario' }}
+                        <div class="dropdown profile-element text-center">
+                            <img class="rounded-circle" width="50" src="{{ asset('img/user.png') }}" style="border: 2px solid #ff7e00;">
+                            <span class="block m-t-xs font-bold" style="color: #ffb700; margin-top: 10px;">
+                                {{ Auth::user()->name ?? 'Admin TostaTech' }}
                             </span>
-
                         </div>
-
-                        <div class="logo-element">
-                            APP
-                        </div>
-
+                        <div class="logo-element" style="color: #ff7e00;">TT</div>
                     </li>
 
                     <li>
                         <a href="{{ url('/dashboard') }}">
-                            <i class="fa fa-home"></i>
+                            <i class="fa fa-home" style="color: #ff7e00;"></i>
                             <span class="nav-label">Inicio</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="javascript:void(0)">
-                            <i class="fa fa-users"></i>
+                            <i class="fa fa-users" style="color: #ff7e00;"></i>
                             <span class="nav-label">Directorio</span>
                             <span class="fa arrow"></span>
                         </a>
-
-                        <ul class="nav nav-second-level collapse">
-
-                            <li>
-                                <a href="{{ url('/personal') }}">Lista de usuarios</a>
-                            </li>
-
-                            <li>
-                                <a href="{{ url('/usuarios/create') }}">Crear usuario</a>
-                            </li>
-
+                        <ul class="nav nav-second-level collapse" style="background: #0a0a0a;">
+                            <li><a href="{{ url('/personal') }}">Lista de usuarios</a></li>
+                            <li><a href="{{ url('/usuarios/create') }}">Crear usuario</a></li>
                         </ul>
-
                     </li>
 
                     <li>
                         <a href="{{ url('/productos') }}">
-                            <i class="fa fa-box"></i>
+                            <i class="fa fa-box" style="color: #ff7e00;"></i>
                             <span class="nav-label">Productos</span>
                         </a>
                     </li>
 
+                    <li>
+                        <a href="{{ url('/pedidos') }}">
+                            <i class="fa fa-shopping-cart" style="color: #ff7e00;"></i>
+                            <span class="nav-label">Pedidos</span>
+                        </a>
                 </ul>
-
             </div>
-
         </nav>
 
         {{-- CONTENIDO PRINCIPAL --}}
-        <div id="page-wrapper" class="gray-bg">
+        <div id="page-wrapper">
 
             {{-- NAVBAR SUPERIOR --}}
             <div class="row border-bottom">
-
-                <nav class="navbar navbar-static-top">
-
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-
-                        <a class="navbar-minimalize btn ">
-                            <i class="fa fa-bars"></i>
-                        </a>
-
+                        <a class="navbar-minimalize btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     </div>
-
                     <ul class="nav navbar-top-links navbar-right">
-
                         <li class="dropdown">
-
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown">
-
-                                <i class="fa fa-user"></i>
-
+                            <a class="dropdown-toggle count-info" data-bs-toggle="dropdown" href="#">
+                                <i class="fa fa-user-circle fa-2x"></i>
                             </a>
-
-                            <ul class="dropdown-menu dropdown-menu-end">
-
+                            <ul class="dropdown-menu dropdown-menu-end" style="background: #1a1a1a; border: 1px solid #333;">
+                                <li><a href="/perfil" class="dropdown-item" style="color: white;">Perfil</a></li>
+                                <li class="dropdown-divider" style="border-top: 1px solid #333;"></li>
                                 <li>
-                                    <a href="/perfil">Perfil</a>
-                                </li>
-
-                                <li>
-
-                                    <a href="{{ route('logout') }}"
+                                    <a href="{{ route('logout') }}" class="dropdown-item" style="color: #ff5555;"
                                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-
                                         Cerrar sesión
-
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                        @csrf
-                                    </form>
-
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">@csrf</form>
                                 </li>
-
                             </ul>
-
                         </li>
-
                     </ul>
-
                 </nav>
-
             </div>
 
             {{-- CONTENIDO DE CADA VISTA --}}
             <div class="wrapper wrapper-content">
-
                 @yield('contenido')
-
             </div>
 
             {{-- FOOTER --}}
             <div class="footer">
-
                 <div class="float-right">
-
-                    <a href="">
-                        Términos y condiciones
-                    </a>
-
+                    <a href="" style="color: #ff7e00;">Términos y condiciones</a>
                 </div>
-
                 <div>
-                    <strong>Copyright</strong> MiApp 2026
+                    <strong>Copyright</strong> TostaTech &copy; 2026
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
+    {{-- SCRIPTS --}}
     <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
-
     <script src="{{ asset('js/popper.min.js') }}"></script>
-
     <script src="{{ asset('js/bootstrap.js') }}"></script>
-
     <script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
-
     <script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
-
     <script src="{{ asset('js/inspinia.js') }}"></script>
 
-
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-
-            $(document).ready(function () {
-                $('#side-menu').metisMenu();
-            });
-
-        });
-    </script>
-
-    <script>
-
         $(document).ready(function () {
-
-            /* Radar 1 */
-
-            c3.generate({
-
-                bindto: '#gauge',
-
-                data: {
-                    columns: [
-                        ['data', 91.4]
-                    ],
-                    type: 'gauge'
-                },
-
-                color: {
-                    pattern: ['#1ab394', '#BABABA']
-                }
-
-            });
-
-
-            /* Radar 2 */
-
-            c3.generate({
-
-                bindto: '#pie',
-
-                data: {
-                    columns: [
-                        ['data1', 30],
-                        ['data2', 120]
-                    ],
-                    colors: {
-                        data1: '#1ab394',
-                        data2: '#BABABA'
-                    },
-                    type: 'pie'
-                }
-
-            });
-
+            $('#side-menu').metisMenu();
         });
-
     </script>
 </body>
-
 </html>
