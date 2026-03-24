@@ -54,9 +54,6 @@ Route::middleware('auth')->group(function () {
     
 });
 
-require __DIR__.'/auth.php';
-
-
 Route::get('/sucursales', function () {
     // Apunta a la carpeta 'sucursales' y al archivo 'sucursales.blade.php'
     return view('sucursales.sucursales'); 
