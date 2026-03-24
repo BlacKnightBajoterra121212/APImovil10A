@@ -107,35 +107,37 @@
             <div class="row">
                 <div class="col-sm-6 login-section px-5">
 
-                    <div class="px-xl-5 ms-xl-4">
-                        <div class="brand-logo mb-4">
-                            <i class="fas fa-fire me-2"></i>TostaTech
-                        </div>
+                    <div class="px-5 ms-xl-4">
+                        <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
+                        <span class="h1 fw-bold mb-0">Logo</span>
+                    </div>
 
-                        <form style="max-width: 400px;" action="/dashboard" method="GET">
-                            <h2 class="login-title">¡Bienvenido de nuevo!</h2>
-                            <p class="text-muted mb-4">Ingresa tus credenciales para acceder al panel.</p>
+                    <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
 
-                            <div class="form-outline mb-4">
-                                <label class="form-label fw-bold" for="email">Correo electrónico</label>
-                                <input type="email" id="email" class="form-control form-control-lg" placeholder="ejemplo@tosta.com" required />
+                        <form style="width: 23rem;" action="/dashboard">
+
+                            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Inicio de sesion</h3>
+
+                            <div data-mdb-input-init class="form-outline mb-4">
+                                <input type="email" id="form2Example18" class="form-control form-control-lg" />
+                                <label class="form-label" for="form2Example18">Correo electronico</label>
                             </div>
 
-                            <div class="form-outline mb-4">
-                                <label class="form-label fw-bold" for="password">Contraseña</label>
-                                <input type="password" id="password" class="form-control form-control-lg" placeholder="••••••••" required />
+                            <div data-mdb-input-init class="form-outline mb-4">
+                                <input type="password" id="form2Example28" class="form-control form-control-lg" />
+                                <label class="form-label" for="form2Example28">Contraseña</label>
                             </div>
 
                             <div class="pt-1 mb-4">
-                                <button class="btn btn-tostatech btn-lg" type="submit">
-                                    Iniciar Sesión
+                                <button class="btn btn-info btn-lg btn-block" type="submit">
+                                    Iniciar sesión
                                 </button>
                             </div>
 
-                            <p class="small mb-3">
-                                <a class="text-muted" href="#!">¿Olvidaste tu contraseña?</a>
+                            <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Olvidaste tu contraseña?</a>
                             </p>
-                            <p>¿No tienes cuenta? <a href="#!" class="link-tostatech">Regístrate aquí</a></p>
+                            <p>No tienes cuenta? <a href="#!" class="link-info">Registrate aqui</a></p>
+
                         </form>
                     </div>
 
@@ -148,8 +150,6 @@
             </div>
         </div>
     </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
