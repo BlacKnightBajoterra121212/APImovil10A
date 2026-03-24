@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\branchController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\rutasController;
@@ -53,10 +54,19 @@ Route::middleware('auth')->group(function () {
     
 });
 
-require __DIR__.'/auth.php';
-
 
 Route::get('/sucursales', function () {
     // Apunta a la carpeta 'sucursales' y al archivo 'sucursales.blade.php'
     return view('sucursales.sucursales'); 
 })->name('sucursales.index');
+
+// Módulo de Sucursales
+Route::middleware('auth')->group(function () {
+    Route::prefix('sucursales')->group(function () {
+        Route::get('/', [branchController::class, 'index'])->name('sucursales.index');
+        Route::post('/guardar', [branchController::class, 'store'])->name('sucursales.guardar');
+        Route::put('/actualizar/{id}', [branchController::class, 'update'])->name('sucursales.actualizar');
+        Route::delete('/eliminar/{id}', [branchController::class, 'destroy'])->name('sucursales.eliminar');
+        Route::patch('/reactivar/{id}', [branchController::class, 'reactivate'])->name('sucursales.reactivar');
+    });
+});

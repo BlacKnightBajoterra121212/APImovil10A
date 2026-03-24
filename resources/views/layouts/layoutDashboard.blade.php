@@ -12,10 +12,10 @@
     {{-- VITE --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
 
     <style>
         /* FONDO GENERAL Y TEXTO */

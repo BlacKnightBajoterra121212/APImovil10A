@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
@@ -17,18 +19,24 @@ class userController extends Controller
     {
         // Obtener todos los roles para los selects
         $roles = Role::all();
-        
+
+        // Obtener todas las compañías para el select
+        $companies = Company::all();
+
+        // Obtener todas las sucursales para el select
+        $branches = Branch::all();
+
         // Obtener los usuarios con su rol
         $personal = User::with('role')
             ->orderBy('name', 'asc')
             ->paginate(10);
-        
+
         // Verificar si hay búsqueda en sesión
         $busqueda = session('busqueda');
-        
-        return view("personal.dirPersonal", compact('personal', 'roles', 'busqueda'));
+
+        return view("personal.dirPersonal", compact('personal', 'roles', 'companies', 'branches', 'busqueda'));
     }
-    
+
     /**
      * Buscar personal por nombre
      */
@@ -37,24 +45,26 @@ class userController extends Controller
         $request->validate([
             'nombre' => 'required|string|min:2'
         ]);
-        
+
         $nombre = $request->input('nombre');
-        
+
         // Buscar usuarios que coincidan con el nombre
         $personal = User::with('role')
             ->where('name', 'LIKE', "%{$nombre}%")
             ->orWhere('email', 'LIKE', "%{$nombre}%")
             ->orderBy('name', 'asc')
             ->paginate(10);
-        
+
         $roles = Role::all();
-        
+        $companies = Company::all(); // Agregar esta línea
+        $branches = Branch::all(); // Agregar esta línea si tienes sucursales
+
         // Guardar término de búsqueda en sesión para mostrarlo en la vista
         session()->flash('busqueda', $nombre);
-        
-        return view("personal.dirPersonal", compact('personal', 'roles'));
+
+        return view("personal.dirPersonal", compact('personal', 'roles', 'companies', 'branches'));
     }
-    
+
     /**
      * Guardar un nuevo usuario/personal
      */
@@ -66,13 +76,13 @@ class userController extends Controller
             'id_role' => 'required|exists:roles,id',
             'phone' => 'nullable|string|max:20'
         ]);
-        
+
         try {
             DB::beginTransaction();
-            
+
             // Obtener ID de la compañía del usuario logueado
             $id_company = auth()->user()->id_company ?? 1;
-            
+
             // Crear usuario en la tabla users
             $user = User::create([
                 'id_company' => $id_company,
@@ -86,12 +96,12 @@ class userController extends Controller
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            
+
             DB::commit();
-            
+
             return redirect()->route('personal')
                 ->with('success', 'Usuario creado exitosamente');
-                
+
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()
@@ -99,7 +109,7 @@ class userController extends Controller
                 ->withInput();
         }
     }
-    
+
     /**
      * Actualizar un usuario/personal existente
      */
@@ -112,13 +122,13 @@ class userController extends Controller
             'phone' => 'nullable|string|max:20',
             'status' => 'required|in:active,inactive'
         ]);
-        
+
         try {
             DB::beginTransaction();
-            
+
             // Buscar el usuario
             $user = User::findOrFail($id);
-            
+
             // Actualizar datos del usuario
             $user->name = $request->name;
             $user->email = $request->email;
@@ -127,15 +137,15 @@ class userController extends Controller
             $user->status = $request->status;
             $user->updated_at = now();
             $user->save();
-            
+
             DB::commit();
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Usuario actualizado exitosamente',
                 'data' => $user
             ]);
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -144,7 +154,7 @@ class userController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Eliminar (desactivar) un usuario
      */
@@ -152,21 +162,21 @@ class userController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            
+
             // Desactivar usuario
             $user->status = 'inactive';
             $user->updated_at = now();
             $user->save();
-            
+
             return redirect()->route('personal')
                 ->with('success', 'Usuario desactivado exitosamente');
-                
+
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'Error al desactivar el usuario: ' . $e->getMessage());
         }
     }
-    
+
     /**
      * Obtener datos de un usuario específico para editar (API)
      */
@@ -174,7 +184,7 @@ class userController extends Controller
     {
         try {
             $user = User::with('role')->findOrFail($id);
-            
+
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -187,7 +197,7 @@ class userController extends Controller
                     'status' => $user->status
                 ]
             ]);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -195,7 +205,7 @@ class userController extends Controller
             ], 404);
         }
     }
-    
+
     /**
      * Reactivar un usuario desactivado
      */
@@ -203,15 +213,15 @@ class userController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            
+
             // Reactivar usuario
             $user->status = 'active';
             $user->updated_at = now();
             $user->save();
-            
+
             return redirect()->route('personal')
                 ->with('success', 'Usuario reactivado exitosamente');
-                
+
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'Error al reactivar el usuario: ' . $e->getMessage());
