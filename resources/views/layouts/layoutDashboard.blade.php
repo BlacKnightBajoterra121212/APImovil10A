@@ -26,7 +26,8 @@
         }
 
         #page-wrapper {
-            background-color: #ececec !important; /* Gris casi negro para el contenido */
+            background-color: #ececec !important;
+            /* Gris casi negro para el contenido */
             min-height: 100vh;
         }
 
@@ -38,7 +39,7 @@
         }
 
         .sidebar-collapse {
-            background-color: #000000 !important;
+            background-color: #1d1d1d !important;
         }
 
         #side-menu li a {
@@ -46,23 +47,24 @@
             font-weight: 500;
         }
 
-        #side-menu > li > a:hover, 
-        #side-menu > li.active > a {
-            background-color: #ff7e00 !important; /* Naranja TostaTech */
+        #side-menu>li>a:hover,
+        #side-menu>li.active>a {
+            background-color: #ff7e00 !important;
+            /* Naranja TostaTech */
             color: white !important;
         }
 
         .nav-header {
-            background-color: #000000 !important;
+            background-color: #2d2d2d !important;
             border-bottom: 1px solid #222;
         }
 
         /* NAVBAR SUPERIOR */
-        .navbar-static-top {
+        /* .navbar-static-top {
             background-color: #000000 !important;
             border-bottom: 1px solid #222 !important;
         }
-
+ */
         .navbar-minimalize {
             background-color: #ff7e00 !important;
             color: white !important;
@@ -75,7 +77,7 @@
 
         /* ELEMENTOS COMUNES (FOOTER, PAGINACIÓN) */
         .footer {
-            background: #000000 !important;
+            background: #1d1d1d !important;
             border-top: 1px solid #222 !important;
             color: #888;
         }
@@ -111,7 +113,115 @@
         }
 
         @media (max-width:768px) {
-            .chart-box { height: 260px; }
+            .chart-box {
+                height: 260px;
+            }
+        }
+
+        /* Quitar subrayado de todos los links del sidebar */
+        .navbar-static-side a,
+        #side-menu a,
+        .nav a,
+        .nav-header a,
+        .sidebar-collapse a,
+        .nav-second-level a {
+            text-decoration: none !important;
+        }
+
+        /* Quitar subrayado en hover también */
+        .navbar-static-side a:hover,
+        #side-menu a:hover,
+        .nav a:hover {
+            text-decoration: none !important;
+        }
+
+        /* Quitar subrayado en links activos */
+        .navbar-static-side a.active,
+        #side-menu a.active {
+            text-decoration: none !important;
+        }
+
+        /* ============================================
+   FIX: Sidebar con scroll independiente
+   ============================================ */
+
+        /* Sidebar con altura completa y scroll independiente */
+        .navbar-static-side {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            width: 220px !important;
+            background-color: #000000 !important;
+            z-index: 1000 !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            height: 100vh !important;
+        }
+
+        /* Contenido del sidebar que se desplaza */
+        .sidebar-collapse {
+            height: 100% !important;
+            overflow-y: visible !important;
+        }
+
+        /* El contenido principal mantiene su scroll normal */
+        #page-wrapper {
+            margin-left: 220px !important;
+            min-height: 100vh !important;
+            overflow-x: hidden !important;
+        }
+
+        /* Para el modo mini sidebar */
+        body.mini-navbar .navbar-static-side {
+            width: 70px !important;
+        }
+
+        body.mini-navbar #page-wrapper {
+            margin-left: 70px !important;
+        }
+
+        /* Mejorar la barra de scroll del sidebar */
+        .navbar-static-side::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .navbar-static-side::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .navbar-static-side::-webkit-scrollbar-thumb {
+            background: #ff7e00;
+            border-radius: 3px;
+        }
+
+        .navbar-static-side::-webkit-scrollbar-thumb:hover {
+            background: #ffb700;
+        }
+
+        /* Asegurar que el contenido del sidebar no se desborde */
+        #side-menu {
+            padding-bottom: 20px;
+        }
+
+        .nav-second-level {
+            position: relative;
+        }
+
+        /* Para móviles */
+        @media (max-width: 768px) {
+            .navbar-static-side {
+                transform: translateX(-100%);
+                transition: transform 0.2s ease-in-out;
+            }
+
+            body.mini-navbar .navbar-static-side {
+                transform: translateX(0);
+            }
+
+            #page-wrapper {
+                margin-left: 0 !important;
+            }
         }
     </style>
 </head>
@@ -125,7 +235,8 @@
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element text-center">
-                            <img class="rounded-circle" width="50" src="{{ asset('img/user.png') }}" style="border: 2px solid #ff7e00;">
+                            <img class="rounded-circle" width="50" src="{{ asset('img/user.png') }}"
+                                style="border: 2px solid #ff7e00;">
                             <span class="block m-t-xs font-bold" style="color: #ffb700; margin-top: 10px;">
                                 {{ Auth::user()->name ?? 'Admin TostaTech' }}
                             </span>
@@ -147,8 +258,8 @@
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level collapse" style="background: #0a0a0a;">
-                            <li><a href="{{ url('/personal') }}">Lista de usuarios</a></li>
-                            <li><a href="{{ url('/usuarios/create') }}">Crear usuario</a></li>
+                            <li><a href="{{ url('/personal') }}">Personal</a></li>
+                            <li><a href="">Clientes</a></li>
                         </ul>
                     </li>
 
@@ -166,22 +277,22 @@
                         </a>
 
                         {{-- Enlace agregado para Sucursales --}}
-                    {{-- En el Sidebar del Layout --}}
-                <li>
-                    <a href="{{ route('sucursales.index') }}">
-                        <i class="fa fa-map-marker-alt" style="color: #ff7e00;"></i>
-                        <span class="nav-label">Sucursales</span>
-                    </a>
-                </li>
+                        {{-- En el Sidebar del Layout --}}
+                    <li>
+                        <a href="{{ route('sucursales.index') }}">
+                            <i class="fa fa-map-marker-alt" style="color: #ff7e00;"></i>
+                            <span class="nav-label">Sucursales</span>
+                        </a>
+                    </li>
 
 
-                {{-- Enlace para Inventario --}}
-                <li>
-                    <a href="{{ url('/inventario') }}">
-                        <i class="fa fa-clipboard-list" style="color: #ff7e00;"></i>
-                        <span class="nav-label">Inventario</span>
-                    </a>
-                </li>
+                    {{-- Enlace para Inventario --}}
+                    <li>
+                        <a href="{{ url('/inventario') }}">
+                            <i class="fa fa-clipboard-list" style="color: #ff7e00;"></i>
+                            <span class="nav-label">Inventario</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -200,7 +311,8 @@
                             <a class="dropdown-toggle count-info" data-bs-toggle="dropdown" href="#">
                                 <i class="fa fa-user-circle fa-2x"></i>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" style="background: #1a1a1a; border: 1px solid #333;">
+                            <ul class="dropdown-menu dropdown-menu-end"
+                                style="background: #1a1a1a; border: 1px solid #333;">
                                 <li><a href="/perfil" class="dropdown-item" style="color: white;">Perfil</a></li>
                                 <li class="dropdown-divider" style="border-top: 1px solid #333;"></li>
                                 <li>
@@ -243,8 +355,35 @@
 
     <script>
         $(document).ready(function () {
-            $('#side-menu').metisMenu();
+            var $sidebar = $('.navbar-static-side');
+            var scrollPosition = 0;
+
+            // Guardar posición antes de abrir submenú
+            $('#side-menu > li > a, .nav-second-level > li > a').on('click', function (e) {
+                var $submenu = $(this).next('ul');
+                if ($submenu.length) {
+                    scrollPosition = $sidebar.scrollTop();
+                    setTimeout(function () {
+                        $sidebar.scrollTop(scrollPosition);
+                    }, 250);
+                }
+            });
+
+            // Inicializar metisMenu
+            $('#side-menu').metisMenu({
+                toggle: false
+            });
+
+            // Botón de colapsar
+            $('.navbar-minimalize').on('click', function (e) {
+                e.preventDefault();
+                $('body').toggleClass('mini-navbar');
+                setTimeout(function () {
+                    $(window).trigger('resize');
+                }, 200);
+            });
         });
     </script>
 </body>
+
 </html>

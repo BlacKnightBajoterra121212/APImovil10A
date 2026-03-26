@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\branchController;
+use App\Http\Controllers\inventarioController;
 use App\Http\Controllers\loginController;
+use App\Http\Controllers\pedidosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\rutasController;
 use App\Http\Controllers\userController;
@@ -54,7 +56,41 @@ Route::middleware('auth')->group(function () {
     
 });
 
-Route::get('/sucursales', function () {
-    // Apunta a la carpeta 'sucursales' y al archivo 'sucursales.blade.php'
-    return view('sucursales.sucursales'); 
-})->name('sucursales.index');
+
+    ///////////////////////////////////////////////////////////////////////////
+    /////////////////////////// MODULO SUCURSALES /////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+Route::middleware('auth')->group(function () {
+    Route::prefix('sucursales')->group(function () {
+        Route::get('/', [branchController::class, 'index'])->name('sucursales.index');
+        Route::post('/guardar', [branchController::class, 'store'])->name('sucursales.guardar');
+        Route::put('/actualizar/{id}', [branchController::class, 'update'])->name('sucursales.actualizar');
+        Route::delete('/eliminar/{id}', [branchController::class, 'destroy'])->name('sucursales.eliminar');
+        Route::patch('/reactivar/{id}', [branchController::class, 'reactivate'])->name('sucursales.reactivar');
+    });
+});
+
+Route::get('/inventario', function () {
+    return view('inventario.index');
+})->name('inventario.index');
+
+// Módulo de Inventario
+Route::middleware('auth')->group(function () {
+    Route::prefix('inventario')->group(function () {
+        Route::get('/', [inventarioController::class, 'index'])->name('inventario.index');
+        Route::post('/ajustar', [inventarioController::class, 'ajustarStock'])->name('inventario.ajustar');
+        Route::get('/movimientos/{branch?}/{product?}', [inventarioController::class, 'getMovements'])->name('inventario.movimientos');
+        Route::post('/filtrar', [inventarioController::class, 'filterByBranch'])->name('inventario.filtrar');
+    });
+});
+
+// Módulo de Pedidos
+Route::middleware('auth')->group(function () {
+    Route::prefix('pedidos')->group(function () {
+        Route::get('/', [pedidosController::class, 'index'])->name('pedidos.index');
+        Route::post('/guardar', [pedidosController::class, 'store'])->name('pedidos.guardar');
+        Route::put('/actualizar/{id}', [pedidosController::class, 'update'])->name('pedidos.actualizar');
+        Route::get('/ver/{id}', [pedidosController::class, 'show'])->name('pedidos.ver');
+        Route::get('/filtrar/{status?}', [pedidosController::class, 'filterByStatus'])->name('pedidos.filtrar');
+    });
+});
