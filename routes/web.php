@@ -94,3 +94,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/filtrar/{status?}', [pedidosController::class, 'filterByStatus'])->name('pedidos.filtrar');
     });
 });
+
+
+// Ruta para visualizar la vista de productos
+Route::get('/productos', function () {
+    // Apunta a la carpeta 'productos' y al archivo 'productos.blade.php'
+    return view('productos.productos'); 
+});
