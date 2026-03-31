@@ -101,3 +101,9 @@ Route::get('/productos', function () {
     // Apunta a la carpeta 'productos' y al archivo 'productos.blade.php'
     return view('productos.productos'); 
 });
+
+
+// Ruta temporal solo para previsualizar la vista de carrito (cliente.carrito)
+Route::get('/tienda', function () {
+    return view('cliente.carrito');
+});
