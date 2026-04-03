@@ -8,7 +8,6 @@ use App\Http\Controllers\pedidosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\rutasController;
 use App\Http\Controllers\userController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -118,11 +117,7 @@ Route::prefix('api')->group(function () {
     Route::post('/login', [ApiAuthController::class, 'login']);
 
     Route::middleware([
-        function (Request $request, \Closure $next) {
-            $request->headers->set('Accept', 'application/json');
-
-            return $next($request);
-        },
+        'force.json.accept',
         'auth',
     ])->group(function () {
         Route::post('/logout', [ApiAuthController::class, 'logout']);
