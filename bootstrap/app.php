@@ -12,6 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->validateCsrfTokens(except: [
+            'api/login',
+            'api/logout',
+        ]);
+
         $middleware->alias([
             'force.json.accept' => ForceJsonAcceptHeader::class,
         ]);
