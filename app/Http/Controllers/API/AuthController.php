@@ -27,7 +27,7 @@ class AuthController extends Controller
             'status' => 'active',
         ];
 
-        if (!Auth::attempt($credentials, (bool) $request->boolean('remember'))) {
+        if (!Auth::attempt($credentials)) {
             return $this->errorResponse(
                 'Las credenciales no coinciden con nuestros registros o el usuario está inactivo.',
                 ['credentials' => ['Credenciales inválidas.']],

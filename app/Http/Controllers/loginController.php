@@ -48,7 +48,7 @@ class loginController extends Controller
         ];
 
         // Intentar autenticar
-        if (Auth::attempt($credentials, $request->has('remember'))) {
+        if (Auth::attempt($credentials)) {
             // Regenerar sesión para seguridad
             $request->session()->regenerate();
             
