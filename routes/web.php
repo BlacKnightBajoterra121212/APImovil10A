@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\API\AuthController as ApiAuthController;
 use App\Http\Controllers\API\PersonalController as ApiPersonalController;
+use App\Http\Controllers\API\ClientesController as ApiClientesController;
+use App\Http\Controllers\API\PedidosController as ApiPedidosController;
+use App\Http\Controllers\API\InventarioController as ApiInventarioController;
 use App\Http\Controllers\branchController;
 use App\Http\Controllers\inventarioController;
 use App\Http\Controllers\loginController;
@@ -130,6 +133,33 @@ Route::prefix('api')->group(function () {
             Route::post('/', [ApiPersonalController::class, 'store']);
             Route::put('/{id}', [ApiPersonalController::class, 'update']);
             Route::patch('/{id}/estado', [ApiPersonalController::class, 'updateStatus']);
+        });
+
+        Route::prefix('/clientes')->group(function () {
+            Route::get('/', [ApiClientesController::class, 'index']);
+            Route::get('/{id}', [ApiClientesController::class, 'show']);
+            Route::post('/', [ApiClientesController::class, 'store']);
+            Route::put('/{id}', [ApiClientesController::class, 'update']);
+            Route::patch('/{id}/estado', [ApiClientesController::class, 'updateStatus']);
+        });
+
+        Route::prefix('/pedidos')->group(function () {
+            Route::get('/', [ApiPedidosController::class, 'index']);
+            Route::get('/{id}', [ApiPedidosController::class, 'show']);
+            Route::get('/{id}/detalle', [ApiPedidosController::class, 'showDetail']);
+            Route::post('/', [ApiPedidosController::class, 'store']);
+            Route::put('/{id}', [ApiPedidosController::class, 'update']);
+            Route::patch('/{id}/estado', [ApiPedidosController::class, 'updateStatus']);
+        });
+
+        Route::prefix('/inventario')->group(function () {
+            Route::get('/', [ApiInventarioController::class, 'index']);
+            Route::get('/movimientos', [ApiInventarioController::class, 'movements']);
+            Route::get('/{id}', [ApiInventarioController::class, 'show']);
+            Route::post('/', [ApiInventarioController::class, 'store']);
+            Route::put('/{id}', [ApiInventarioController::class, 'update']);
+            Route::patch('/{id}/stock', [ApiInventarioController::class, 'updateStock']);
+            Route::post('/movimientos', [ApiInventarioController::class, 'storeMovement']);
         });
     });
 });

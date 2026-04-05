@@ -17,6 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/logout',
             'api/personal',
             'api/personal/*',
+            'api/clientes',
+            'api/clientes/*',
+            'api/pedidos',
+            'api/pedidos/*',
+            'api/inventario',
+            'api/inventario/*',
         ]);
 
         $middleware->alias([
