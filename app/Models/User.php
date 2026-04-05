@@ -42,4 +42,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Company::class, 'id_company');
     }
+
+    // Relación con sucursal
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'id_branch');
+    }
 }

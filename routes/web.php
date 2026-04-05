@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController as ApiAuthController;
+use App\Http\Controllers\API\PersonalController as ApiPersonalController;
 use App\Http\Controllers\branchController;
 use App\Http\Controllers\inventarioController;
 use App\Http\Controllers\loginController;
@@ -122,5 +123,13 @@ Route::prefix('api')->group(function () {
     ])->group(function () {
         Route::post('/logout', [ApiAuthController::class, 'logout']);
         Route::get('/me', [ApiAuthController::class, 'me']);
+
+        Route::prefix('/personal')->group(function () {
+            Route::get('/', [ApiPersonalController::class, 'index']);
+            Route::get('/{id}', [ApiPersonalController::class, 'show']);
+            Route::post('/', [ApiPersonalController::class, 'store']);
+            Route::put('/{id}', [ApiPersonalController::class, 'update']);
+            Route::patch('/{id}/estado', [ApiPersonalController::class, 'updateStatus']);
+        });
     });
 });
