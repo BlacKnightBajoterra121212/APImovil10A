@@ -5,6 +5,7 @@ use App\Http\Controllers\API\PersonalController as ApiPersonalController;
 use App\Http\Controllers\API\ClientesController as ApiClientesController;
 use App\Http\Controllers\API\PedidosController as ApiPedidosController;
 use App\Http\Controllers\API\InventarioController as ApiInventarioController;
+use App\Http\Controllers\API\SucursalesController as ApiSucursalesController;
 use App\Http\Controllers\branchController;
 use App\Http\Controllers\inventarioController;
 use App\Http\Controllers\loginController;
@@ -161,5 +162,16 @@ Route::prefix('api')->group(function () {
             Route::patch('/{id}/stock', [ApiInventarioController::class, 'updateStock']);
             Route::post('/movimientos', [ApiInventarioController::class, 'storeMovement']);
         });
+
+        Route::prefix('/sucursales')->group(function () {
+            Route::get('/', [ApiSucursalesController::class, 'index']);
+            Route::get('/catalogos', [ApiSucursalesController::class, 'catalog']);
+            Route::get('/{id}', [ApiSucursalesController::class, 'show']);
+            Route::post('/', [ApiSucursalesController::class, 'store']);
+            Route::put('/{id}', [ApiSucursalesController::class, 'update']);
+            Route::patch('/{id}/estado', [ApiSucursalesController::class, 'updateStatus']);
+            Route::get('/{id}/operacion', [ApiSucursalesController::class, 'operation']);
+        });
+
     });
 });
