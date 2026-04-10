@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController as ApiAuthController;
+use App\Http\Controllers\API\DashboardController as ApiDashboardController;
 use App\Http\Controllers\API\PersonalController as ApiPersonalController;
 use App\Http\Controllers\API\ClientesController as ApiClientesController;
 use App\Http\Controllers\API\PedidosController as ApiPedidosController;
@@ -76,10 +77,6 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-Route::get('/inventario', function () {
-    return view('inventario.index');
-})->name('inventario.index');
-
 // Módulo de Inventario
 Route::middleware('auth')->group(function () {
     Route::prefix('inventario')->group(function () {
@@ -127,9 +124,11 @@ Route::prefix('api')->group(function () {
     ])->group(function () {
         Route::post('/logout', [ApiAuthController::class, 'logout']);
         Route::get('/me', [ApiAuthController::class, 'me']);
+        Route::get('/dashboard', [ApiDashboardController::class, 'index']);
 
         Route::prefix('/personal')->group(function () {
             Route::get('/', [ApiPersonalController::class, 'index']);
+            Route::get('/catalogos', [ApiPersonalController::class, 'catalog']);
             Route::get('/{id}', [ApiPersonalController::class, 'show']);
             Route::post('/', [ApiPersonalController::class, 'store']);
             Route::put('/{id}', [ApiPersonalController::class, 'update']);
@@ -155,7 +154,9 @@ Route::prefix('api')->group(function () {
 
         Route::prefix('/inventario')->group(function () {
             Route::get('/', [ApiInventarioController::class, 'index']);
+            Route::get('/catalogos', [ApiInventarioController::class, 'catalog']);
             Route::get('/movimientos', [ApiInventarioController::class, 'movements']);
+            Route::post('/productos', [ApiInventarioController::class, 'storeProduct']);
             Route::get('/{id}', [ApiInventarioController::class, 'show']);
             Route::post('/', [ApiInventarioController::class, 'store']);
             Route::put('/{id}', [ApiInventarioController::class, 'update']);

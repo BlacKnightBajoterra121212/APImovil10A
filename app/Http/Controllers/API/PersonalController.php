@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Company;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,6 +15,38 @@ use Illuminate\Support\Facades\Validator;
 
 class PersonalController extends Controller
 {
+    public function catalog(): JsonResponse
+    {
+        $companies = Company::query()
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        $roles = Role::query()
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        $branches = Branch::query()
+            ->orderBy('name')
+            ->get(['id', 'id_company', 'name', 'status']);
+
+        return $this->successResponse('Catálogo de personal obtenido correctamente.', [
+            'companies' => $companies->map(fn (Company $company) => [
+                'id' => $company->id,
+                'name' => $company->name,
+            ])->values(),
+            'roles' => $roles->map(fn (Role $role) => [
+                'id' => $role->id,
+                'name' => $role->name,
+            ])->values(),
+            'branches' => $branches->map(fn (Branch $branch) => [
+                'id' => $branch->id,
+                'id_company' => $branch->id_company,
+                'name' => $branch->name,
+                'status' => $branch->status,
+            ])->values(),
+        ]);
+    }
+
     public function index(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [

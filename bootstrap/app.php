@@ -23,6 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/pedidos/*',
             'api/inventario',
             'api/inventario/*',
+            'api/sucursales',
+            'api/sucursales/*',
         ]);
 
         $middleware->alias([

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\BranchInventory;
+use App\Models\Category;
 use App\Models\InventoryMovement;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
@@ -13,6 +15,36 @@ use Illuminate\Support\Facades\Validator;
 
 class InventarioController extends Controller
 {
+    public function catalog(): JsonResponse
+    {
+        $branches = Branch::query()
+            ->orderBy('name')
+            ->get(['id', 'id_company', 'name', 'status']);
+
+        $products = Product::query()
+            ->with('category:id,name')
+            ->orderBy('name')
+            ->get(['id', 'id_company', 'id_category', 'name', 'description', 'price', 'status']);
+
+        $categories = Category::query()
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        return $this->successResponse('Catálogos de inventario obtenidos correctamente.', [
+            'branches' => $branches->map(fn (Branch $branch) => [
+                'id' => $branch->id,
+                'id_company' => $branch->id_company,
+                'name' => $branch->name,
+                'status' => $branch->status,
+            ])->values(),
+            'products' => $products->map(fn (Product $product) => $this->productPayload($product))->values(),
+            'categories' => $categories->map(fn (Category $category) => [
+                'id' => $category->id,
+                'name' => $category->name,
+            ])->values(),
+        ]);
+    }
+
     public function index(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -153,6 +185,66 @@ class InventarioController extends Controller
 
         return $this->successResponse('Registro de inventario creado correctamente.', [
             'inventario' => $this->inventoryPayload($inventory),
+        ], 201);
+    }
+
+    public function storeProduct(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'id_branch' => 'required|integer|exists:branches,id',
+            'id_category' => 'required|integer|exists:categories,id',
+            'name' => 'required|string|max:100',
+            'description' => 'nullable|string|max:200',
+            'price' => 'required|numeric|min:0',
+            'status' => 'required|in:active,inactive',
+        ], [
+            'id_branch.required' => 'La sucursal es obligatoria.',
+            'id_branch.exists' => 'La sucursal seleccionada no existe.',
+            'id_category.required' => 'La categoría es obligatoria.',
+            'id_category.exists' => 'La categoría seleccionada no existe.',
+            'name.required' => 'El nombre del producto es obligatorio.',
+            'name.max' => 'El nombre del producto no puede tener más de 100 caracteres.',
+            'description.max' => 'La descripción no puede tener más de 200 caracteres.',
+            'price.required' => 'El precio es obligatorio.',
+            'price.numeric' => 'El precio debe ser un número válido.',
+            'price.min' => 'El precio no puede ser negativo.',
+            'status.required' => 'El estado es obligatorio.',
+            'status.in' => 'El estado debe ser active o inactive.',
+        ]);
+
+        $validator->after(function ($validator) use ($request) {
+            $branchId = $request->input('id_branch');
+            if (empty($branchId)) {
+                return;
+            }
+
+            $branch = Branch::find($branchId);
+            if (!$branch || empty($branch->id_company)) {
+                $validator->errors()->add('id_branch', 'No fue posible determinar la empresa de la sucursal seleccionada.');
+            }
+        });
+
+        if ($validator->fails()) {
+            return $this->errorResponse('Error de validación.', $validator->errors()->toArray(), 422);
+        }
+
+        $branch = Branch::find((int) $request->input('id_branch'));
+
+        $product = DB::transaction(function () use ($request, $branch) {
+            return Product::create([
+                'id_company' => (int) $branch->id_company,
+                'id_category' => (int) $request->input('id_category'),
+                'name' => trim((string) $request->input('name')),
+                'description' => $request->filled('description') ? trim((string) $request->input('description')) : null,
+                'price' => (string) $request->input('price'),
+                'status' => (string) $request->input('status'),
+            ]);
+        });
+
+        $product->load('category:id,name');
+
+        return $this->successResponse('Producto creado correctamente.', [
+            'product' => $this->productPayload($product),
         ], 201);
     }
 
@@ -419,6 +511,20 @@ class InventarioController extends Controller
             'product_status' => $inventory->product?->status,
             'category_name' => $inventory->product?->category?->name,
             'stock' => (int) $inventory->stock,
+        ];
+    }
+
+    private function productPayload(Product $product): array
+    {
+        return [
+            'id' => $product->id,
+            'id_company' => $product->id_company,
+            'id_category' => $product->id_category,
+            'name' => $product->name,
+            'description' => $product->description,
+            'price' => $product->price !== null ? (float) $product->price : null,
+            'status' => $product->status,
+            'category_name' => $product->category?->name,
         ];
     }
 
